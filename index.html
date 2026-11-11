@@ -192,7 +192,8 @@ input[type=range]{width:100%;accent-color:var(--amber)}
 .card-hdr-btns button:hover{border-color:var(--amber);color:var(--amber)}
 
 /* Modals */
-.modal-overlay{position:fixed;inset:0;background:rgba(5,9,14,.78);backdrop-filter:blur(4px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal-overlay{position:fixed;inset:0;background:rgba(5,9,14,.82);backdrop-filter:blur(6px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;transition:opacity .2s ease}
+.modal-overlay[hidden]{display:none !important}
 .modal-box{background:var(--panel);border:1px solid var(--line);border-radius:16px;max-width:920px;width:100%;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.6);overflow:hidden}
 .modal-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line);background:var(--panel2)}
 .modal-hdr h3{font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px;color:var(--fg)}
@@ -872,6 +873,15 @@ bind('#f_tag','tag');bind('#f_h1','h1');bind('#f_h2','h2');bind('#f_sub','sub');
     setEdit(e => { e.caption = cap.value; });
     toast('⚡ हुक कैप्शन में जोड़ दिया गया!');
   };
+
+  
+  // Close modals on Escape key
+  window.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      const hm = $('#hooksModal'); if (hm) hm.hidden = true;
+      const lb = $('#slideLightbox'); if (lb) lb.hidden = true;
+    }
+  });
 
   // Lightbox close
   if($('#closeLightbox')) $('#closeLightbox').onclick = () => { $('#slideLightbox').hidden = true; };
