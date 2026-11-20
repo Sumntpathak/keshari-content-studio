@@ -1,0 +1,290 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:ND;font-weight:500;src:url(node_modules/@fontsource/noto-sans-devanagari/files/noto-sans-devanagari-devanagari-500-normal.woff2);unicode-range:U+0900-097F}
+@font-face{font-family:ND;font-weight:700;src:url(node_modules/@fontsource/noto-sans-devanagari/files/noto-sans-devanagari-devanagari-700-normal.woff2);unicode-range:U+0900-097F}
+@font-face{font-family:ND;font-weight:800;src:url(node_modules/@fontsource/noto-sans-devanagari/files/noto-sans-devanagari-devanagari-800-normal.woff2);unicode-range:U+0900-097F}
+@font-face{font-family:PP;font-weight:500;src:url(node_modules/@fontsource/poppins/files/poppins-latin-500-normal.woff2)}
+@font-face{font-family:PP;font-weight:600;src:url(node_modules/@fontsource/poppins/files/poppins-latin-600-normal.woff2)}
+@font-face{font-family:PP;font-weight:700;src:url(node_modules/@fontsource/poppins/files/poppins-latin-700-normal.woff2)}
+@font-face{font-family:PP;font-weight:800;src:url(node_modules/@fontsource/poppins/files/poppins-latin-800-normal.woff2)}
+:root{--navy:#0b2447;--orange:#f26522;--amber:#f5a623;--blue:#1a8fe3;--green:#2e9b44;--ink:#f4f6fa;--mute:#8da0bd;--rule:rgba(244,246,250,.28)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--navy);font-family:PP,ND,sans-serif;color:var(--ink)}
+#stage{position:absolute;inset:0;background:var(--navy)}
+#grain{position:absolute;inset:0;opacity:.07;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+/* ---- brand frame ---- */
+#hd{position:absolute;left:0;top:0;width:1080px;height:230px;background:#fff;z-index:5}
+#hd .k{position:absolute;left:52px;top:22px;height:186px}
+#hd .wt{position:absolute;right:372px;top:84px;text-align:right;font:700 22px/1.55 PP;letter-spacing:6px;color:#475569}
+#hd .sep{position:absolute;right:346px;top:62px;width:2px;height:106px;background:#cbd5e1}
+#hd .w{position:absolute;right:46px;top:66px;height:98px}
+.bars{position:absolute;left:0;right:0;height:12px;display:flex;z-index:6}.bars i{flex:1}
+.bars i:nth-child(1){background:var(--orange)}.bars i:nth-child(2){background:var(--amber)}.bars i:nth-child(3){background:var(--blue)}.bars i:nth-child(4){background:var(--green)}
+#ft{position:absolute;left:0;top:1730px;width:1080px;height:190px;background:#0a1f3d;z-index:5}
+#ft .av{position:absolute;left:46px;top:42px;width:104px;height:104px;border-radius:50%;border:5px solid var(--orange);background:url(founder.jpeg) center/cover}
+#ft .nm{position:absolute;left:170px;top:48px;font:800 30px/1.3 PP,ND}
+#ft .nm small{display:block;font:500 21px/1.4 PP,ND;color:#94a3b8}
+#ft .vl{position:absolute;left:470px;top:34px;width:2px;height:120px;background:rgba(255,255,255,.18)}
+#ft .ph{position:absolute;left:500px;top:28px;font:800 46px PP;color:var(--amber)}
+#ft .em{position:absolute;left:500px;top:98px;font:500 25px PP;color:#e2e8f0}
+#ft .ad{position:absolute;left:500px;top:138px;font:500 22px PP,ND;color:#94a3b8}
+#prog{position:absolute;left:0;bottom:0;height:6px;width:100%;background:rgba(255,255,255,.12)}#prog b{display:block;height:100%;width:0;background:var(--amber)}
+/* ---- animated items ---- */
+#layer{position:absolute;left:0;top:0;width:1080px;height:1920px;z-index:2}
+.it{position:absolute;display:none;white-space:pre;font-family:PP,ND,sans-serif}
+.tab{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+.cur{display:inline-block;width:0;height:0;position:relative;font-size:inherit}
+.cur:after{content:"";position:absolute;left:.05em;bottom:-.14em;width:.07em;height:.98em;background:#f5a623}
+.dot{position:absolute;border-radius:50%}
+.tick{position:absolute;width:2px;height:14px;background:var(--rule)}
+.tl{position:absolute;font:500 22px PP,ND;color:var(--mute);transform:translateX(-50%);white-space:nowrap}
+</style></head><body>
+<div id="stage"></div><div id="grain"></div>
+<div id="hd"><img class="k" src="klogo.png"><div class="wt">WAAREE<br>SOLAR PROVIDER</div><div class="sep"></div><img class="w" src="wlogo.png"></div>
+<div class="bars" style="top:230px"><i></i><i></i><i></i><i></i></div>
+<div id="ft"><div class="av"></div><div class="nm">इं. प्रिंस केशरी<small>संस्थापक, केशरी इको सोलर</small></div><div class="vl"></div>
+ <div class="ph">78983 87061</div><div class="em">keshariecosolararchitect@gmail.com</div><div class="ad">📍 वाड्रफनगर, बलरामपुर, छत्तीसगढ़</div><div id="prog"><b></b></div></div>
+<div id="layer"></div>
+
+<script>
+/* ================= helpers ================= */
+const AM='#f5a623', INK='#f4f6fa', MUTE='#8da0bd', NAVY='#0b2447';
+const $=id=>document.getElementById(id), layer=$('layer');
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const expo=x=>x>=1?1:1-Math.pow(2,-10*x), cub=x=>1-Math.pow(1-x,3), inout=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const seg=(u,a,b)=>clamp((u-a)/(b-a));
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const GS=new Intl.Segmenter('hi',{granularity:'grapheme'});
+const graphemes=s=>[...GS.segment(s)].map(x=>x.segment);
+function mk(css){const d=document.createElement('div');d.className='it';Object.assign(d.style,css||{});layer.appendChild(d);return d}
+function measure(text,size,weight){const s=document.createElement('span');s.style.cssText=`position:absolute;visibility:hidden;white-space:pre;font:${weight} ${size}px PP,ND`;s.textContent=text;document.body.appendChild(s);const w=s.offsetWidth;s.remove();return w}
+
+/* ================= item factories =================
+   all times (t0, dur, cps) are in "design seconds" u; the beat is time-scaled so it always fits the narration */
+function Text(o){
+  o=Object.assign({x:72,w:936,align:'left',weight:800,size:60,color:INK,cps:14,t0:0,lh:1.2,ls:0,silent:false,text:''},o);
+  const runs=typeof o.text==='string'?[[o.text,o.color]]:o.text;
+  const g=[];runs.forEach(([t,c])=>graphemes(t).forEach(ch=>g.push([ch,c])));
+  const times=[];let acc=0;
+  g.forEach(([ch],i)=>{times.push(acc);acc+= ch==='\n'?3.2/o.cps: ch===' '?2.0/o.cps : 1/o.cps});
+  const el=mk({left:o.x+'px',top:o.y+'px',width:o.w+'px',textAlign:o.align,fontSize:o.size+'px',fontWeight:o.weight,lineHeight:o.lh,letterSpacing:o.ls+'px',color:o.color});
+  const end=o.t0+acc;let last='';
+  return {kind:'text',el,t0:o.t0,end:end+0.4,silent:o.silent,g,times,
+    update(u,a){
+      const lu=u-o.t0; if(lu<0){el.style.display='none';return}
+      el.style.display='block';el.style.opacity=a;
+      let n=0;while(n<g.length&&lu>=times[n])n++;
+      const typing=n<g.length, showCur=typing||(lu-acc<0.7&&(Math.floor(lu*4)%2===0));
+      const key=n+'|'+showCur; if(key===last)return;last=key;
+      let html='',run=null,buf='';
+      const flush=()=>{if(buf)html+=`<span style="color:${run}">${esc(buf)}</span>`;buf=''};
+      for(let i=0;i<n;i++){const [ch,c]=g[i];if(c!==run){flush();run=c}buf+=ch}
+      flush();
+      if(showCur)html+='<span class="cur"></span>';
+      html+=`<span style="visibility:hidden">${esc(g.slice(n).map(x=>x[0]).join(''))}</span>`;
+      el.innerHTML=html;
+    },
+    events(){return g.map(([ch],i)=>({u:o.t0+times[i],kind:ch==='\n'?'return':ch===' '?'space':'key'}))}};
+}
+function Count(o){
+  o=Object.assign({x:72,w:936,align:'left',size:200,color:INK,to:100,t0:0,dur:1.8,prefix:'',suffix:'',weight:800,ls:-4},o);
+  const el=mk({left:o.x+'px',top:o.y+'px',width:o.w+'px',textAlign:o.align,fontSize:o.size+'px',fontWeight:o.weight,lineHeight:1.12,letterSpacing:o.ls+'px',color:o.color});el.classList.add('tab');
+  return {kind:'count',el,t0:o.t0,end:o.t0+o.dur+0.4,
+    update(u,a){const lu=u-o.t0;if(lu<0){el.style.display='none';return}
+      el.style.display='block';el.style.opacity=a*expo(lu/0.25);
+      const v=o.to*cub(seg(lu,0,o.dur));el.textContent=o.prefix+Math.round(v).toLocaleString('en-IN')+o.suffix}};
+}
+function Rule(o){
+  o=Object.assign({x:72,w:936,h:4,t0:0,dur:.8,dir:'h',color:'brand'},o);
+  const bg=o.color==='brand'?'linear-gradient(90deg,#f26522 0 25%,#f5a623 25% 50%,#1a8fe3 50% 75%,#2e9b44 75%)':o.color;
+  const el=mk({left:o.x+'px',top:o.y+'px',background:bg});
+  return {kind:'rule',el,t0:o.t0,end:o.t0+o.dur,
+    update(u,a){const lu=u-o.t0;if(lu<0){el.style.display='none';return}
+      el.style.display='block';el.style.opacity=a;const p=inout(seg(lu,0,o.dur));
+      if(o.dir==='h'){el.style.width=o.w*p+'px';el.style.height=o.h+'px'}else{el.style.width=o.h+'px';el.style.height=o.w*p+'px'}}};
+}
+function Box(o){   // hairline outline that draws itself
+  o=Object.assign({t0:0,dur:.7,color:AM,sw:2.5},o);
+  const el=mk({left:o.x+'px',top:o.y+'px',width:o.w+'px',height:o.h+'px'});
+  el.innerHTML=`<svg width="${o.w}" height="${o.h}" style="overflow:visible"><rect x="1.25" y="1.25" width="${o.w-2.5}" height="${o.h-2.5}" rx="6" fill="none" stroke="${o.color}" stroke-width="${o.sw}"/></svg>`;
+  const rect=el.querySelector('rect');const len=rect.getTotalLength();rect.style.strokeDasharray=len;
+  return {kind:'box',el,t0:o.t0,end:o.t0+o.dur,
+    update(u,a){const lu=u-o.t0;if(lu<0){el.style.display='none';return}
+      el.style.display='block';el.style.opacity=a;rect.style.strokeDashoffset=len*(1-inout(seg(lu,0,o.dur)))}};
+}
+function Bar(o){   // segments: [value,color,delay]
+  o=Object.assign({x:72,w:936,h:72,total:100,t0:0,dur:1.4,segs:[]},o);
+  const el=mk({left:o.x+'px',top:o.y+'px',width:o.w+'px',height:o.h+'px',background:'rgba(255,255,255,.07)',overflow:'hidden'});
+  const parts=o.segs.map(()=>{const d=document.createElement('div');d.style.cssText='position:absolute;top:0;bottom:0;left:0;width:0';el.appendChild(d);return d});
+  o.segs.forEach((s,i)=>parts[i].style.background=s[1]);
+  const end=o.t0+o.dur+Math.max(0,...o.segs.map(s=>s[2]||0))+0.3;
+  return {kind:'bar',el,t0:o.t0,end,
+    update(u,a){const lu=u-o.t0;if(lu<-0.01){el.style.display='none';return}
+      el.style.display='block';el.style.opacity=a;
+      let left=0;o.segs.forEach((s,i)=>{const full=s[0]/o.total*o.w;const p=inout(seg(lu,s[2]||0,(s[2]||0)+o.dur));parts[i].style.left=left+'px';parts[i].style.width=full*p+'px';left+=full})}};
+}
+function Ticks(o){ // pairs [percent,label]
+  o=Object.assign({x:72,w:936,t0:0,labels:[[0,'0%'],[25,'25%'],[50,'50%'],[75,'75%'],[100,'100%']]},o);
+  const el=mk({left:'0px',top:'0px',width:'1080px',height:'1px'});
+  o.labels.forEach(([p,l])=>{const x=o.x+o.w*p/100;el.insertAdjacentHTML('beforeend',`<div class="tick" style="left:${x-1}px;top:${o.y}px"></div><div class="tl" style="left:${x}px;top:${o.y+19}px">${l}</div>`)});
+  return {kind:'ticks',el,t0:o.t0,end:o.t0+.8,
+    update(u,a){const lu=u-o.t0;if(lu<0){el.style.display='none';return}el.style.display='block';el.style.opacity=a*expo(lu/0.5)}};
+}
+function Dots(o){
+  o=Object.assign({x:86,y:940,cols:9,rows:5,gx:108,gy:84,r:22,t0:0,dur:3},o);
+  const el=mk({left:'0px',top:'0px',width:'1080px',height:'1px'});const dots=[];
+  for(let r=0;r<o.rows;r++)for(let c=0;c<o.cols;c++){const d=document.createElement('div');d.className='dot';d.style.cssText=`left:${o.x+c*o.gx}px;top:${o.y+r*o.gy}px;width:${o.r*2}px;height:${o.r*2}px;background:rgba(255,255,255,.12)`;el.appendChild(d);dots.push({d,k:c+r*0.7})}
+  const maxk=o.cols-1+(o.rows-1)*0.7;
+  return {kind:'dots',el,t0:o.t0,end:o.t0+o.dur+0.4,
+    update(u,a){const lu=u-o.t0;if(lu<0){el.style.display='none';return}el.style.display='block';el.style.opacity=a;
+      dots.forEach(({d,k})=>{const p=expo(clamp((lu-(k/maxk)*o.dur*0.8)/0.35));d.style.background=p>0.02?`rgba(245,166,35,${.12+.88*p})`:'rgba(255,255,255,.12)';d.style.transform=`scale(${.8+.2*p})`})}};
+}
+const T_=(o)=>Text(o);
+function Tag(label,n){ // outlined label + "NN / 15"
+  const w=Math.round(measure(label,38,800))+60;
+  return [Box({x:72,y:300,w,h:76,t0:0,dur:.6}),
+          Text({x:102,y:312,w:w,size:38,cps:22,t0:.45,text:label,lh:1.35}),
+          Text({x:72,y:318,w:936,align:'right',size:26,weight:600,color:MUTE,ls:4,cps:30,t0:.6,text:String(n).padStart(2,'0')+' / 15',silent:true})];
+}
+
+/* ================= the 15 beats ================= */
+function buildBeats(){
+  const N=15, B=[];
+  // 1 ---------------------------------------------------------
+  B.push({items:[...Tag('राज्य',1),
+    Text({y:620,size:250,lh:1.2,cps:7,t0:.8,text:[['छत्तीस',INK],['गढ़',AM]]}),
+    Rule({y:965,t0:2.2,dur:.9}),
+    Text({y:1015,size:56,weight:700,color:MUTE,cps:12,t0:2.9,text:'की धरती ने देश को बिजली दी'})]});
+  // 2 ---------------------------------------------------------
+  B.push({items:[...Tag('राज्य की बिजली क्षमता',2),
+    Count({y:408,size:268,to:28824,t0:.8,dur:1.8}),
+    Text({y:722,size:92,color:AM,cps:6,t0:2.0,text:'MW',lh:1}),
+    Text({x:312,y:716,w:700,size:40,weight:700,cps:20,t0:2.3,lh:1.3,text:'थर्मल (कोयला) बिजली\nकी कुल क्षमता'}),
+    Text({y:978,size:26,weight:600,color:MUTE,cps:28,t0:4.2,ls:1,text:'कुल सूचीबद्ध क्षमता में हिस्सेदारी'}),
+    Bar({y:1030,h:72,total:28824+220+2047,t0:4.6,dur:1.4,segs:[[28824,'#586a86',0],[220,'#1a8fe3',0],[2047,AM,1.3]]}),
+    Text({x:90,y:1046,w:500,size:32,weight:700,cps:22,t0:5.3,text:'थर्मल 28,824 MW'}),
+    Ticks({y:1102,t0:4.9}),
+    Rule({x:977,y:960,w:70,h:2,dir:'v',t0:6.8,dur:.4,color:AM}),
+    Text({y:905,size:34,weight:700,align:'right',cps:26,t0:7.0,text:[['सोलर + अन्य ',INK],['2,047 MW',AM],[' = सिर्फ़ ',INK],['≈7%',AM]]}),
+    Rule({y:1310,h:2,t0:8.4,dur:.6,color:'rgba(244,246,250,.28)'}),
+    Rule({y:1460,h:2,t0:8.4,dur:.6,color:'rgba(244,246,250,.28)'}),
+    Text({y:1342,w:520,size:32,weight:600,color:MUTE,lh:1.4,cps:24,t0:8.8,text:'2030 के लिए\nराज्य का अनुमान (सोलर)'}),
+    Count({y:1322,w:830,size:104,align:'right',color:AM,to:8689,t0:9.0,dur:1.0,ls:-2}),
+    Text({x:912,y:1366,w:100,size:40,weight:700,cps:6,t0:10.0,text:'MW'}),
+    Text({y:1550,size:24,weight:500,color:MUTE,cps:45,t0:10.2,silent:true,text:'स्रोत: राज्य ऊर्जा रिपोर्ट, फ़रवरी 2026 · हिस्सेदारी सूचीबद्ध घटकों के योग (31,091 MW) पर, अनुमानित'})]});
+  // 3 ---------------------------------------------------------
+  B.push({items:[...Tag('बिल',3),
+    Text({y:470,size:120,weight:700,color:MUTE,cps:9,t0:.6,text:'हर महीने'}),
+    Text({y:640,size:200,cps:7,t0:1.7,text:[['बिल का ',INK],['डर',AM]]})]});
+  // 4 ---------------------------------------------------------
+  B.push({items:[...Tag('सूरज',4),
+    Text({y:460,size:150,cps:8,t0:.6,text:'हर सुबह'}),
+    Text({y:640,size:150,color:AM,cps:8,t0:1.6,text:'छत पर सूरज'}),
+    Rule({y:900,t0:2.8,dur:.7}),
+    Text({y:950,size:62,weight:700,lh:1.55,cps:14,t0:3.4,text:'बिना कोई बिल भेजे\nबिना कोई मीटर लगाए\nबिना कुछ माँगे'})]});
+  // 5 ---------------------------------------------------------
+  B.push({items:[...Tag('धूप',5),
+    Text({y:430,size:92,lh:1.4,cps:12,t0:.6,text:'अनाज सुखाया\nअचार डाला\nहाथ सेंके'}),
+    Rule({y:900,t0:4.0,dur:.6}),
+    Text({y:950,size:220,color:AM,cps:7,t0:4.7,text:'पहली बार'}),
+    Text({y:1240,size:52,weight:700,color:MUTE,cps:14,t0:6.0,text:'यही धूप घर का बिल घटा सकती है'})]});
+  // 6 ---------------------------------------------------------
+  B.push({items:[...Tag('गाँव',6),
+    Text({y:430,size:170,cps:8,t0:.6,text:'पहली बार'}),
+    Text({y:620,size:170,color:AM,cps:7,t0:1.7,text:'रोशन'}),
+    Dots({y:930,t0:2.6,dur:3.6}),
+    Text({y:1380,size:48,weight:700,color:MUTE,cps:14,t0:5.0,text:'जहाँ तार कभी नहीं पहुँचे थे'}),
+    Text({y:1560,size:24,weight:500,color:MUTE,cps:45,t0:6.4,silent:true,text:'स्रोत: राज्य/ज़िला प्रशासन की रिपोर्टें (जैसे भालूपानी, बलरामपुर) · सोलर विद्युतीकरण'})]});
+  // 7 ---------------------------------------------------------
+  B.push({items:[...Tag('किसान',7),
+    Count({y:480,size:165,to:100000,suffix:'+',t0:.8,dur:2.0,color:INK}),
+    Text({y:740,size:72,color:AM,cps:9,t0:3.0,text:'सोलर पंप'}),
+    Text({y:860,size:50,weight:700,color:MUTE,cps:14,t0:3.7,text:'किसानों के खेतों में पानी खींच रहे हैं'}),
+    Text({y:1550,size:24,weight:500,color:MUTE,cps:45,t0:4.8,silent:true,text:'स्रोत: CREDA सौर सुजला योजना · 2022 तक की रिपोर्ट के आँकड़े'})]});
+  // 8 ---------------------------------------------------------
+  B.push({items:[...Tag('अब',8),
+    Text({y:470,size:110,weight:700,color:MUTE,cps:9,t0:.6,text:'अब यही ताक़त'}),
+    Text({y:640,size:150,cps:7,t0:1.6,text:'आपकी'}),
+    Text({y:820,size:150,color:AM,cps:7,t0:2.4,text:'अपनी छत पर'})]});
+  // 9 ---------------------------------------------------------
+  B.push({items:[...Tag('सब्सिडी',9),
+    Text({y:440,size:46,weight:700,color:MUTE,w:420,cps:14,t0:.6,text:'पहले 2 kW'}),
+    Text({y:440,size:46,weight:700,align:'right',cps:16,t0:1.0,text:[['₹30,000 × 2 = ',INK],['₹60,000',AM]]}),
+    Text({y:535,size:46,weight:700,color:MUTE,w:420,cps:14,t0:2.0,text:'तीसरा 1 kW'}),
+    Text({y:535,size:46,weight:700,align:'right',cps:16,t0:2.4,text:[['₹18,000 × 1 = ',INK],['₹18,000',AM]]}),
+    Rule({y:635,h:3,t0:3.4,dur:.6,color:'rgba(244,246,250,.35)'}),
+    Text({y:670,size:44,weight:700,color:MUTE,cps:14,t0:4.0,text:'कुल सब्सिडी · 3 kW पर'}),
+    Count({y:740,size:230,prefix:'₹',to:78000,color:AM,t0:4.6,dur:2.0}),
+    Text({y:1020,size:52,weight:700,color:INK,cps:14,t0:6.6,text:'तक · पीएम सूर्य घर योजना'}),
+    Text({y:1550,size:24,weight:500,color:MUTE,cps:45,t0:7.6,silent:true,text:'स्रोत: पीएम सूर्य घर योजना दिशानिर्देश (₹30,000/kW पहले 2 kW, ₹18,000 तीसरे kW) · शर्तें लागू'})]});
+  // 10 --------------------------------------------------------
+  B.push({items:[...Tag('उत्पादन',10),
+    Text({y:440,size:270,cps:4,t0:.6,text:'12–15'}),
+    Text({y:770,size:84,color:AM,cps:9,t0:2.0,text:'यूनिट / दिन'}),
+    Text({y:935,size:50,weight:700,color:MUTE,cps:14,t0:3.0,text:'अच्छी धूप में, 3 kW सिस्टम से'}),
+    Text({y:1050,size:76,cps:11,t0:4.2,text:[['≈ 360–450',AM],[' यूनिट / माह*',INK]]}),
+    Text({y:1550,size:24,weight:500,color:MUTE,cps:45,t0:5.6,silent:true,text:'*अनुमानित · धूप और छत की दिशा पर निर्भर'})]});
+  // 11 --------------------------------------------------------
+  const rows=[['छत','सूरज से बिजली बनी'],['घर','पहले आपके घर में इस्तेमाल'],['मीटर','बची बिजली ग्रिड को, यूनिट जमा'],['बिल','जमा यूनिट बिल में कटती हैं']];
+  const b11=[...Tag('नेट मीटर',11)];
+  rows.forEach(([l,r],i)=>{const y=450+i*200;
+    b11.push(Text({y,w:300,size:76,color:AM,cps:7,t0:.7+i*1.2,text:l}));
+    b11.push(Text({x:380,y:y+14,w:628,size:44,weight:700,cps:15,t0:1.0+i*1.2,text:r}));
+    if(i<3)b11.push(Rule({y:y+150,h:2,t0:1.8+i*1.2,dur:.5,color:'rgba(244,246,250,.22)'}))});
+  B.push({items:b11});
+  // 12 --------------------------------------------------------
+  B.push({items:[...Tag('लक्ष्य',12),
+    Text({y:440,size:200,cps:7,t0:.6,text:'एक करोड़'}),
+    Text({y:660,size:100,color:AM,cps:9,t0:1.9,text:'घरों का लक्ष्य'}),
+    Bar({y:920,h:72,total:100,t0:3.0,dur:1.6,segs:[[48,AM,0]]}),
+    Text({x:90,y:936,w:560,size:32,weight:700,color:NAVY,cps:20,t0:3.8,text:'48 लाख+ घर लाभान्वित'}),
+    Ticks({y:1000,t0:3.2,labels:[[0,'0'],[50,'50 लाख'],[100,'1 करोड़']]}),
+    Text({y:1550,size:24,weight:500,color:MUTE,cps:45,t0:5.2,silent:true,text:'स्रोत: पीएम सूर्य घर योजना, 22 जुलाई 2026 तक (39.72 लाख सिस्टम, 48 लाख+ घर)'})]});
+  // 13 --------------------------------------------------------
+  B.push({items:[...Tag('सवाल',13),
+    Text({y:470,size:130,weight:700,color:MUTE,cps:8,t0:.6,text:'सोलर क्यों?'}),
+    Text({y:700,size:180,color:AM,cps:7,t0:2.0,text:'इंतज़ार क्यों?'})]});
+  // 14 --------------------------------------------------------
+  B.push({items:[...Tag('हक़',14),
+    Text({y:430,size:170,cps:7,t0:.6,text:'धूप पर'}),
+    Text({y:640,size:200,color:AM,cps:7,t0:1.6,text:'पहला हक़'}),
+    Text({y:880,size:170,cps:7,t0:3.0,text:'उसी घर का'}),
+    Text({y:1150,size:56,weight:700,color:MUTE,cps:12,t0:4.6,text:'जिसकी वह छत है'})]});
+  // 15 (end card, holds) -------------------------------------
+  B.push({hold:true,items:[...Tag('संपर्क',15),
+    Text({y:430,size:150,cps:8,t0:.6,text:'अपनी छत.'}),
+    Text({y:610,size:150,color:AM,cps:8,t0:1.6,text:'अपनी बिजली.'}),
+    Rule({y:830,t0:2.7,dur:.7}),
+    Text({y:880,size:70,cps:14,t0:3.3,text:'फ़्री साइट सर्वे'}),
+    Text({y:990,size:124,color:AM,cps:8,t0:4.2,text:'78983 87061'}),
+    Text({y:1160,size:44,cps:18,t0:5.4,text:'केशरी इको सोलर एंड आर्किटेक्ट'}),
+    Text({y:1230,size:40,weight:700,color:MUTE,cps:18,t0:6.4,text:'वाड्रफनगर, बलरामपुर (छत्तीसगढ़)'})]});
+  B.forEach(b=>{b.need=Math.max(...b.items.map(i=>i.end))+0.8});
+  return B;
+}
+
+/* ================= timeline ================= */
+let TIM=null, BEATS=null, cur=-1;
+window.setTiming=async t=>{
+  await document.fonts.ready;
+  TIM=t; BEATS=buildBeats();
+  if(BEATS.length!==TIM.beats.length)throw new Error('beats mismatch: page has '+BEATS.length+', timing has '+TIM.beats.length);
+  BEATS.forEach((b,i)=>{const d=TIM.beats[i].end-TIM.beats[i].start;b.k=clamp((d-0.4)/b.need,0.45,1);b.start=TIM.beats[i].start;b.end=TIM.beats[i].end});
+  return BEATS.map(b=>({need:+b.need.toFixed(2),k:+b.k.toFixed(2)}));
+};
+window.renderFrame=t=>{
+  $('prog').firstElementChild.style.width=(clamp(t/TIM.total)*100)+'%';
+  let bi=-1;for(let i=0;i<BEATS.length;i++)if(t>=BEATS[i].start)bi=i;
+  if(bi!==cur){if(cur>=0)BEATS[cur].items.forEach(it=>it.el.style.display='none');cur=bi}
+  if(bi<0)return;
+  const b=BEATS[bi],lt=t-b.start,u=lt/b.k;
+  const a=b.hold?1:1-clamp((lt-(b.end-b.start-0.3))/0.3);
+  b.items.forEach(it=>it.update(u,a));
+};
+window.typeEvents=()=>{            // for the typewriter sound track
+  const ev=[];
+  BEATS.forEach(b=>b.items.forEach(it=>{if(it.kind==='text'&&!it.silent)it.events().forEach(e=>ev.push({t:b.start+e.u*b.k,kind:e.kind}))}));
+  return ev.sort((a,b)=>a.t-b.t);
+};
+</script></body></html>
