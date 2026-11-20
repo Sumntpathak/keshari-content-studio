@@ -1,0 +1,164 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:ND;font-weight:500;src:url(noto-sans-devanagari-devanagari-500-normal.woff2);unicode-range:U+0900-097F,U+A8E0-A8FF,U+1CD0-1CFF}
+@font-face{font-family:ND;font-weight:700;src:url(noto-sans-devanagari-devanagari-700-normal.woff2);unicode-range:U+0900-097F,U+A8E0-A8FF,U+1CD0-1CFF}
+@font-face{font-family:ND;font-weight:800;src:url(noto-sans-devanagari-devanagari-800-normal.woff2);unicode-range:U+0900-097F,U+A8E0-A8FF,U+1CD0-1CFF}
+@font-face{font-family:PP;font-weight:600;src:url(poppins-latin-600-normal.woff2)}
+@font-face{font-family:PP;font-weight:700;src:url(poppins-latin-700-normal.woff2)}
+@font-face{font-family:PP;font-weight:800;src:url(poppins-latin-800-normal.woff2)}
+:root{--navy:#0b2447;--orange:#f26522;--amber:#f5a623;--blue:#1a8fe3;--green:#2e9b44}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:transparent;font-family:PP,ND,sans-serif}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}
+.bars{position:absolute;left:0;right:0;height:14px;display:flex}
+.bars i{flex:1}.bars i:nth-child(1){background:var(--orange)}.bars i:nth-child(2){background:var(--amber)}.bars i:nth-child(3){background:var(--blue)}.bars i:nth-child(4){background:var(--green)}
+/* ---------- INTRO ---------- */
+#intro{background:radial-gradient(circle at 50% 46%,#fff 0%,#fff6e8 55%,#fde3bd 100%)}
+#glow{position:absolute;left:540px;top:830px;width:1500px;height:1500px;margin:-750px 0 0 -750px;border-radius:50%;background:radial-gradient(circle,rgba(245,166,35,.55) 0%,rgba(245,166,35,.18) 35%,transparent 65%)}
+#rays{position:absolute;left:540px;top:830px;width:0;height:0}
+#rays b{position:absolute;left:-6px;top:0;width:12px;height:900px;transform-origin:6px 0;border-radius:6px;background:linear-gradient(to bottom,rgba(245,166,35,0) 0,rgba(245,166,35,.0) 18%,rgba(245,166,35,.55) 40%,rgba(245,166,35,0) 100%)}
+#ilogo{position:absolute;left:140px;top:560px;width:800px;}
+#ilogoWrap{position:absolute;left:0;top:0;width:1080px;height:1920px}
+#shine{position:absolute;left:140px;top:560px;width:800px;height:560px;-webkit-mask:url(klogo.png) center/100% 100% no-repeat;mask:url(klogo.png) center/100% 100% no-repeat;background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.95) 50%,transparent 58%) 150% 0/300% 100% no-repeat}
+#tag{position:absolute;left:0;right:0;top:1130px;text-align:center;font:800 54px PP,ND;color:var(--navy);white-space:nowrap}
+#tag span{display:inline-block;margin:0 14px}
+#tag em{font-style:normal;color:var(--orange)}
+#partner{position:absolute;left:0;right:0;top:1330px;display:flex;flex-direction:column;align-items:center;gap:14px}
+#partner small{font:600 26px PP;letter-spacing:9px;color:#64748b}
+#partner img{width:420px;}
+#iline{position:absolute;left:0;top:1230px;height:6px;background:linear-gradient(90deg,var(--orange),var(--amber),var(--blue),var(--green));border-radius:3px}
+#itop,#ibot{position:absolute;left:0;right:0}
+#itop{top:0}#ibot{bottom:0}
+#wipe{position:absolute;inset:0;background:var(--navy)}
+/* ---------- LOWER THIRD ---------- */
+#lt{background:transparent}
+#ltbox{position:absolute;left:48px;right:48px;bottom:150px;height:250px;border-radius:30px;background:rgba(11,36,71,.94);box-shadow:0 18px 50px rgba(0,0,0,.45);overflow:hidden;display:flex;align-items:center;padding:0 40px 0 0}
+#ltbox:before{content:"";position:absolute;left:0;top:0;bottom:0;width:14px;background:linear-gradient(var(--orange),var(--amber),var(--blue),var(--green))}
+#ltav{width:170px;height:170px;border-radius:50%;margin-left:48px;border:6px solid var(--orange);background:#fff center/cover no-repeat;flex:none}
+#lttxt{margin-left:34px;flex:1}
+#lt1{font:800 46px/1.35 PP,ND;color:#fff}
+#lt2{font:500 28px/1.4 PP,ND;color:#cbd5e1;margin-top:2px}
+#lt3{font:800 56px PP;color:var(--amber);margin-top:10px;letter-spacing:1px}
+#ltwa{position:absolute;right:40px;top:30px;font:700 24px PP;color:#fff;background:var(--green);padding:8px 20px;border-radius:30px}
+/* ---------- OUTRO ---------- */
+#outro{background:radial-gradient(circle at 50% 30%,#12335f 0%,var(--navy) 60%,#06152c 100%)}
+#ocard{position:absolute;left:90px;top:200px;width:900px;padding:40px 30px 30px;border-radius:44px;background:#fff;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+#ocard img.k{width:640px;display:block;margin:0 auto}
+#ocard .sep{height:3px;margin:8px 80px 18px;background:linear-gradient(90deg,var(--orange),var(--amber),var(--blue),var(--green));border-radius:2px}
+#ocard .wrow{display:flex;align-items:center;justify-content:center;gap:24px}
+#ocard .wrow small{font:600 22px/1.5 PP;letter-spacing:6px;color:#64748b;text-align:right}
+#ocard .wrow img{width:330px}
+#ohead{position:absolute;left:0;right:0;top:1000px;text-align:center;font:800 78px/1.25 PP,ND;color:#fff}
+#ohead em{font-style:normal;color:var(--amber)}
+#osub{position:absolute;left:0;right:0;top:1230px;text-align:center;font:500 38px PP,ND;color:#cbd5e1}
+#ocall{position:absolute;left:90px;right:90px;top:1330px;height:150px;border-radius:30px;background:linear-gradient(90deg,var(--orange),#ff8a3d);display:flex;align-items:center;justify-content:center;gap:26px;font:800 74px PP;color:#fff;box-shadow:0 14px 40px rgba(242,101,34,.5)}
+#ocall svg{width:70px;height:70px}
+#owa{position:absolute;left:90px;right:90px;top:1510px;height:100px;border-radius:24px;border:3px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;gap:18px;font:700 44px PP;color:#fff}
+#owa b{color:#4ade80}
+#oadr{position:absolute;left:0;right:0;top:1660px;text-align:center;font:500 34px/1.5 PP,ND;color:#e2e8f0}
+#ofoot{position:absolute;left:0;right:0;top:1770px;text-align:center;font:600 26px PP;letter-spacing:6px;color:#94a3b8}
+.fade{opacity:0}
+/* ---------- WATERMARK ---------- */
+#wm{background:transparent}
+#wmchip{position:absolute;left:40px;top:60px;width:250px;padding:10px 14px 8px;border-radius:22px;background:#fff;box-shadow:0 8px 28px rgba(0,0,0,.35)}
+#wmchip img{width:100%;display:block}
+</style></head><body>
+<!-- INTRO -->
+<div class="scene" id="intro">
+  <div id="glow"></div><div id="rays"></div>
+  <div id="ilogoWrap"><img id="ilogo" src="klogo.png"><div id="shine"></div></div>
+  <div id="tag"><span>अपनी छत</span>•<span>अपनी बिजली</span>•<span>अपनी बचत</span></div>
+  <div id="iline"></div>
+  <div id="partner"><small>AUTHORISED PARTNER</small><img src="wlogo.png"></div>
+  <div class="bars" id="itop" style="top:0"></div><div class="bars" id="ibot" style="bottom:0"></div>
+  <div id="wipe"></div>
+</div>
+<!-- LOWER THIRD -->
+<div class="scene" id="lt">
+  <div id="ltbox">
+    <div id="ltav"></div>
+    <div id="lttxt"><div id="lt1"></div><div id="lt2"></div><div id="lt3"></div></div>
+  </div>
+</div>
+<!-- OUTRO -->
+<div class="scene" id="outro">
+  <div class="bars" style="top:0"></div>
+  <div id="ocard"><img class="k" src="klogo.png"><div class="sep"></div>
+    <div class="wrow"><small>WAAREE<br>SOLAR PROVIDER</small><img src="wlogo.png"></div></div>
+  <div id="ohead">बिजली बिल से <em>आज़ादी</em><br>अब आपकी छत से!</div>
+  <div id="osub">फ्री साइट सर्वे • सब्सिडी आवेदन में पूरी मदद</div>
+  <div id="ocall"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>78983 87061</div>
+  <div id="owa"><b>WhatsApp</b> 91118 75277</div>
+  <div id="oadr">📍 वाड्रफनगर, बलरामपुर (छत्तीसगढ़)<br>keshariecosolararchitect@gmail.com</div>
+  <div id="ofoot">KESHARI ECO SOLAR &amp; ARCHITECT</div>
+  <div class="bars" style="bottom:0"></div>
+</div>
+<!-- WATERMARK -->
+<div class="scene" id="wm"><div id="wmchip"><img src="klogo.png"></div></div>
+<script>
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const seg=(t,a,b)=>clamp((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3), eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2, back=x=>{const c=1.70158+1;return 1+c*Math.pow(x-1,3)+1.70158*Math.pow(x-1,2)};
+document.querySelectorAll('.bars').forEach(b=>b.innerHTML='<i></i><i></i><i></i><i></i>');
+// rays
+const rays=$('rays');for(let i=0;i<36;i++){const b=document.createElement('b');b.dataset.a=i*10;rays.appendChild(b)}
+function show(id){document.querySelectorAll('.scene').forEach(s=>s.style.display=s.id===id?'block':'none')}
+
+// INTRO 3.0s
+function intro(t){
+  show('intro');
+  // background wipe reveal (navy -> clear), bars sweep
+  const w=seg(t,0,.45); $('wipe').style.transform=`translateY(${-eio(w)*100}%)`;
+  $('itop').style.transform=`scaleX(${eo(seg(t,.2,.9))})`;$('itop').style.transformOrigin='left';
+  $('ibot').style.transform=`scaleX(${eo(seg(t,.3,1.0))})`;$('ibot').style.transformOrigin='right';
+  // glow pulse + rays spin out
+  const g=eo(seg(t,.3,1.4)); $('glow').style.opacity=g*(.85+.15*Math.sin(t*3));
+  $('glow').style.transform=`scale(${.6+.5*g})`;
+  const rs=eo(seg(t,.35,1.5));
+  [...rays.children].forEach((b,i)=>{
+    const a=+b.dataset.a + t*14;
+    const len=.3+.7*(0.5+0.5*Math.sin(i*1.7+t*2.2));
+    b.style.transform=`rotate(${a}deg) scaleY(${rs*len})`;
+    b.style.opacity=rs;
+  });
+  // logo: scale-in with overshoot, then shine sweep
+  const l=seg(t,.55,1.25); const s=.55+.45*back(l);
+  $('ilogoWrap').style.opacity=eo(seg(t,.55,.95));
+  $('ilogoWrap').style.transform=`translateY(${(1-eo(l))*50}px) scale(${s})`;
+  $('ilogoWrap').style.transformOrigin='540px 810px';
+  const sh=seg(t,1.35,2.0); $('shine').style.backgroundPosition=(150-sh*150)+'% 0'; $('shine').style.opacity=sh>0&&sh<1?1:0;
+  // tagline tracking
+  const tg=eo(seg(t,1.1,1.8)); const tag=$('tag'); tag.style.opacity=tg; tag.style.letterSpacing=(14-9*tg)+'px'; tag.style.transform=`translateY(${(1-tg)*20}px)`;
+  [...tag.querySelectorAll('span')].forEach((s,i)=>s.style.color=i==1?'#f26522':i==2?'#2e9b44':'#0b2447');
+  // underline
+  $('iline').style.width=(eo(seg(t,1.0,1.8))*1080)+'px';$('iline').style.left='0px';
+  // partner
+  const p=eo(seg(t,1.7,2.3)); $('partner').style.opacity=p; $('partner').style.transform=`translateY(${(1-p)*30}px)`;
+  // exit: fade to white-out wipe
+  const ex=seg(t,2.75,3.0); document.body.style.opacity=1-ex*0;
+}
+// LOWER THIRD, 4.0s, payload by variant
+const LT={
+ a:{av:'klogo.png',l1:'केशरी इको सोलर & आर्किटेक्ट',l2:'Authorised Waaree Solar Partner • वाड्रफनगर',l3:'📞 78983 87061'},
+ b:{av:'house.jpeg',l1:'पीएम सूर्य घर: ₹78,000 तक सब्सिडी',l2:'3.6 kW Waaree सोलर किट • फ्री इंडक्शन + एयर फ्रायर',l3:'📞 78983 87061'}
+};
+function lt(t,v){
+  show('lt'); const d=LT[v];
+  $('ltav').style.backgroundImage=`url(${d.av})`;$('ltav').style.backgroundSize=d.av.startsWith('klogo')?'88%':'cover';
+  $('lt1').textContent=d.l1;$('lt2').textContent=d.l2;$('lt3').textContent=d.l3;
+  const inn=eo(seg(t,0,.55)), out=eio(seg(t,3.45,4.0));
+  const box=$('ltbox'); box.style.transform=`translateY(${(1-inn+out)*360}px)`; box.style.opacity=clamp(inn*(1-out)*2);
+  const k=eo(seg(t,.35,.9)); [$('lt1'),$('lt2'),$('lt3')].forEach((e,i)=>{const kk=eo(seg(t,.3+i*.12,.8+i*.12));e.style.opacity=kk;e.style.transform=`translateX(${(1-kk)*40}px)`});
+}
+// OUTRO 4.5s
+function outro(t){
+  show('outro');
+  const card=eo(seg(t,0,.7)); $('ocard').style.opacity=card; $('ocard').style.transform=`translateY(${(1-card)*-80}px) scale(${.92+.08*card})`;
+  const items=[['ohead',.5],['osub',.8],['ocall',1.05],['owa',1.3],['oadr',1.5],['ofoot',1.7]];
+  items.forEach(([id,at])=>{const k=eo(seg(t,at,at+.55));const e=$(id);e.style.opacity=k;e.style.transform=`translateY(${(1-k)*50}px)`});
+  const pulse=1+.025*Math.sin(Math.max(0,t-1.6)*6); $('ocall').style.transform+=` scale(${pulse})`;
+}
+function wm(t){show('wm')}
+window.renderFrame=(scene,t,v)=>{({intro,outro,wm,lt:(t)=>lt(t,v||'a')})[scene](t)};
+</script></body></html>
