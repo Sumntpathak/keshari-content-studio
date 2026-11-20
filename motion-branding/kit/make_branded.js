@@ -41,32 +41,18 @@ async function renderFrames(page, scene, dur, variant) {
   const wm = path.join(T, 'wm.png'); await page.screenshot({ path: wm, omitBackground: true });
   await browser.close();
 
-  // ---- 3. chime + whoosh sound (written as a WAV) -----------------------
-  const sr = 44100, len = Math.floor(sr * 2.4), buf = Buffer.alloc(len * 4);
-  const notes = [[1046.5, 0, 3, .35], [1318.5, .12, 3, .3], [1568, .24, 2.5, .3], [2093, .36, 2, .22]];
-  let seed = 1, rnd = () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296 - .5, prev = 0, sum = 0, win = [], peak = 0;
-  const x = new Float32Array(len);
-  for (let i = 0; i < len; i++) {
-    const t = i / sr; let v = 0;
-    for (const [f, st, dec, a] of notes) if (t >= st) { const tt = t - st; v += a * Math.sin(2 * Math.PI * f * tt) * Math.exp(-dec * tt) + a * .25 * Math.sin(4 * Math.PI * f * tt) * Math.exp(-dec * 1.6 * tt); }
-    const n = rnd(); prev = prev * .8 + n * .2;               // simple low-pass noise
-    const env = t < 1.8 ? (t < .9 ? Math.pow(t / .9, 2) : Math.exp(-(t - .9) * 5)) : 0;
-    v += .35 * (.6 * prev + .4 * n) * env; x[i] = v; peak = Math.max(peak, Math.abs(v));
-  }
-  for (let i = 0; i < len; i++) { const s = Math.round(x[i] / peak * .7 * 32767); buf.writeInt16LE(s, i * 4); buf.writeInt16LE(s, i * 4 + 2); }
-  const hdr = Buffer.alloc(44); hdr.write('RIFF', 0); hdr.writeUInt32LE(36 + buf.length, 4); hdr.write('WAVEfmt ', 8); hdr.writeUInt32LE(16, 16);
-  hdr.writeUInt16LE(1, 20); hdr.writeUInt16LE(2, 22); hdr.writeUInt32LE(sr, 24); hdr.writeUInt32LE(sr * 4, 28); hdr.writeUInt16LE(4, 32); hdr.writeUInt16LE(16, 34); hdr.write('data', 36); hdr.writeUInt32LE(buf.length, 40);
-  const sfx = path.join(T, 'sfx.wav'); fs.writeFileSync(sfx, Buffer.concat([hdr, buf]));
+  // ---- 3. chime + whoosh: the exact sound file used in the shared render ----
+  const sfx = path.join(__dirname, 'sfx.wav');
 
   // ---- 4. composite with ffmpeg ------------------------------------------
   const off1 = INTRO - XF1;                 // intro -> video crossfade start
   const off2 = INTRO + D - XF1 - XF2;       // video -> outro crossfade start
   const total = off2 + OUTRO;
-  const tA1 = 4.5, tB = Math.max(6, D * 0.36), tA2 = Math.max(tB + 6, D - 8.5);   // lower-third times (in video time)
+  const tA1 = 4.5, tB = Math.min(16.5, D * 0.36), tA2 = Math.max(tB + 6, D - 8.57);   // lower-third times (in video time)
   const aDelay = Math.round(off1 * 1000), oDelay = Math.round((off2 - 0.37) * 1000);
   const fg = `
 [0:v]format=yuv420p,setsar=1[intro];
-[1:v]fps=${FPS},scale=1080:1920:force_original_aspect_ratio=decrease:flags=lanczos,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:black,setsar=1,format=yuv420p[bv];
+[1:v]fps=${FPS},scale=1080:1920:force_original_aspect_ratio=increase:flags=lanczos,crop=1080:1920,setsar=1,format=yuv420p[bv];
 [2:v]format=rgba,fade=in:st=0.6:d=0.6:alpha=1[wm];
 [3:v]format=rgba,split[a0][a1];
 [a0]setpts=PTS+${tA1}/TB[la1];
