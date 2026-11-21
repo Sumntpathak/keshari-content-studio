@@ -1,0 +1,116 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Keshari logo animation</title>
+<style>
+@font-face{font-family:PP;font-weight:500;src:url(node_modules/@fontsource/poppins/files/poppins-latin-500-normal.woff2)}
+@font-face{font-family:PP;font-weight:600;src:url(node_modules/@fontsource/poppins/files/poppins-latin-600-normal.woff2)}
+@font-face{font-family:PP;font-weight:700;src:url(node_modules/@fontsource/poppins/files/poppins-latin-700-normal.woff2)}
+@font-face{font-family:PP;font-weight:800;src:url(node_modules/@fontsource/poppins/files/poppins-latin-800-normal.woff2)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1080px;overflow:hidden;background:#fff}
+#bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,#ffffff 0%,#fff6e8 55%,#fde6c2 100%)}
+#glow{position:absolute;left:554px;top:431px;width:1100px;height:1100px;margin:-550px 0 0 -550px;border-radius:50%;background:radial-gradient(circle,rgba(247,170,40,.55) 0%,rgba(247,170,40,.16) 38%,transparent 66%);opacity:0}
+svg{position:absolute;left:90px;top:225px;overflow:visible}
+text{font-family:PP,sans-serif}
+</style></head><body>
+<div id="bg"></div><div id="glow"></div>
+<svg id="svg" viewBox="0 0 600 420" width="900" height="630">
+ <defs>
+  <linearGradient id="gSun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fa9f1c"/><stop offset="1" stop-color="#f4771f"/></linearGradient>
+  <linearGradient id="gBlue" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2ba9f0"/><stop offset="1" stop-color="#1688dd"/></linearGradient>
+  <linearGradient id="gWord" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7731f"/><stop offset="1" stop-color="#ee5a1c"/></linearGradient>
+  <linearGradient id="gRay" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f3a21a"/><stop offset="1" stop-color="#f7c94a"/></linearGradient>
+  <linearGradient id="gShine" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".85"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <clipPath id="cHorizon"><rect x="0" y="0" width="600" height="176"/></clipPath>
+  <clipPath id="cPanel"><polygon points="183,148 312,170 437,148 322,271 302,271"/></clipPath>
+  <clipPath id="cReveal"><rect id="revRect" x="150" y="140" width="320" height="0"/></clipPath>
+  <clipPath id="cWord"><rect x="20" y="268" width="560" height="76"/></clipPath>
+  <clipPath id="cTag"><rect id="tagRect" x="40" y="380" width="0" height="28"/></clipPath>
+ </defs>
+ <g id="rays"></g>
+ <g clip-path="url(#cHorizon)"><g id="sunG"><circle cx="309.5" cy="137.5" r="70.5" fill="url(#gSun)"/><g id="tree"></g></g></g>
+ <g clip-path="url(#cReveal)"><g clip-path="url(#cPanel)">
+   <polygon points="183,148 312,170 437,148 322,271 302,271" fill="url(#gBlue)"/>
+   <g id="grid" stroke="#fff" stroke-width="3.4" stroke-linecap="butt" fill="none"></g>
+   <rect id="shine" x="0" y="130" width="70" height="160" fill="url(#gShine)" transform="skewX(-22)"/>
+ </g></g>
+ <line id="roofL" x1="106" y1="262" x2="182" y2="147" stroke="url(#gBlue)" stroke-width="15"/>
+ <line id="roofR" x1="509" y1="262" x2="434" y2="148" stroke="url(#gBlue)" stroke-width="15"/>
+ <g id="wins" fill="#1d9be6"></g>
+ <g clip-path="url(#cWord)"><g id="word"></g></g>
+ <text id="eco" x="45" y="368" font-size="24" font-weight="700" fill="#2f8f3e" textLength="519" lengthAdjust="spacing">ECO SOLAR &amp; ARCHITECT</text>
+ <g clip-path="url(#cTag)"><text id="tag" x="63" y="400" font-size="18" font-weight="600" fill="#1a8fe3" textLength="491" lengthAdjust="spacing">SAVE ENERGY | SAVE MONEY | SAVE NATURE</text></g>
+</svg>
+<script>
+const NS='http://www.w3.org/2000/svg',$=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)),seg=(t,a,b)=>clamp((t-a)/(b-a));
+const expo=x=>x>=1?1:1-Math.pow(2,-10*x),inout=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2,cub=x=>1-Math.pow(1-x,3);
+const back=x=>{const c=1.9;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const el=(n,a,p)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);(p||$('svg')).appendChild(e);return e};
+
+/* rays: [inner x,y, outer x,y] */
+const RAYS=[[300,68,288,20],[316,65,317,37],[337,70,353,23],[273,75,257,45],[255,89,223,58],[237,112,195,95],[228,132,193,127],[357,80,373,63],[373,93,405,68],[385,112,412,99],[392,132,438,124],[393,149,403,152]];
+const rayEls=RAYS.map(()=>el('polygon',{fill:'url(#gRay)'},$('rays')));
+function rayPoly(r,p,pulse){const [x1,y1,x2,y2]=r;const dx=(x2-x1)*p*pulse,dy=(y2-y1)*p*pulse,L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L;
+  const w0=3.2,w1=.7;return `${x1+nx*w0},${y1+ny*w0} ${x1+dx+nx*w1},${y1+dy+ny*w1} ${x1+dx-nx*w1},${y1+dy-ny*w1} ${x1-nx*w0},${y1-ny*w0}`}
+
+/* tree */
+const trunk=el('polygon',{points:'306,134 314,134 316,160 325,171 297,171 304,160',fill:'#2f8f2a'},$('tree'));
+const LEAVES=[[295,112,14],[312,103,16],[329,112,14],[283,126,11],[339,126,11],[300,128,13],[322,128,13],[311,119,15],[303,100,9],[321,98,9]];
+const leafEls=LEAVES.map(([x,y,r],i)=>el('circle',{cx:x,cy:y,r,fill:i%3===0?'#58b236':i%3===1?'#3d9a2c':'#2f8a27'},$('tree')));
+
+/* grid lines (white), clipped by the panel polygon */
+const d1=[119,122],d2=[-115,122];const gl=[];
+[.16,.42,.68].forEach(s=>{const x=183+129*s,y=148+22*s;gl.push([x,y,x+d1[0]*1.6,y+d1[1]*1.6])});
+[.16,.42,.68].forEach(s=>{const x=437-125*s,y=148+22*s;gl.push([x,y,x+d2[0]*1.6,y+d2[1]*1.6])});
+[186,214,242].forEach((y,i)=>gl.push([180,y-3,440,y+3]));
+const gridEls=gl.map(([a,b,c,d])=>{const l=el('line',{x1:a,y1:b,x2:c,y2:d},$('grid'));const L=Math.hypot(c-a,d-b);l.style.strokeDasharray=L;l.dataset.L=L;return l});
+
+/* windows */
+const PANES=[[163,208,22,24],[190,208,22,24],[163,236,22,26],[190,236,22,26],[405,214,21,22],[430,214,22,22],[405,238,21,23],[430,238,22,23]];
+const paneEls=PANES.map(([x,y,w,h])=>el('rect',{x,y,width:w,height:h,rx:1.5},$('wins')));
+
+/* roof dash */
+['roofL','roofR'].forEach(id=>{const l=$(id);l.dataset.L=l.getTotalLength();l.style.strokeDasharray=l.dataset.L});
+
+/* wordmark: per-letter positions from a measured, full-width text */
+let letters=[];
+function buildWord(){
+  // natural glyph positions, then stretch every letter horizontally so the word spans x 45..569 like the original wide lettering
+  const t=el('text',{x:0,y:334,'font-size':74,'font-weight':800});t.textContent='KESHARI';
+  const nat=t.getComputedTextLength(),sx=524/nat;
+  for(let i=0;i<7;i++){const p=t.getStartPositionOfChar(i);const e=el('text',{x:0,y:334,'font-size':74,'font-weight':800,fill:'url(#gWord)'},$('word'));e.textContent='KESHARI'[i];e.dataset.x=45+p.x*sx;e.dataset.sx=sx;letters.push(e)}
+  t.remove();
+}
+let ready=false;
+async function init(){await document.fonts.load('800 74px PP');await document.fonts.load('700 24px PP');await document.fonts.load('600 18px PP');await document.fonts.load('500 18px PP');await document.fonts.ready;buildWord();ready=true}
+
+window.setT=function(t){
+  if(!ready)return;
+  const T=4.6;
+  // glow + sun rise
+  $('glow').style.opacity=expo(seg(t,.2,1.4))*(0.9+0.1*Math.sin(t*3));$('glow').style.transform=`scale(${.6+.4*expo(seg(t,.2,1.8))})`;
+  const rise=expo(seg(t,.15,1.2));$('sunG').setAttribute('transform',`translate(0 ${(1-rise)*118})`);
+  // rays burst + idle pulse
+  RAYS.forEach((r,i)=>{const p=expo(seg(t,.9+i*.045,1.5+i*.045));const pulse=t>3.8?1+.05*Math.sin((t-3.8)*5+i):1;rayEls[i].setAttribute('points',rayPoly(r,p,pulse));rayEls[i].style.opacity=p>0?1:0});
+  // tree grows from the trunk base
+  const tg=seg(t,1.0,1.9);trunk.setAttribute('transform',`translate(0 171) scale(1 ${expo(seg(t,1.0,1.5))}) translate(0 -171)`);
+  leafEls.forEach((e,i)=>{const p=back(seg(t,1.25+i*.04,1.75+i*.04));const [x,y]=LEAVES[i];e.setAttribute('transform',`translate(${x} ${y}) scale(${Math.max(0,p)}) translate(${-x} ${-y})`)});
+  // roof lines draw upward
+  const lp=inout(seg(t,.35,1.1)),rp=inout(seg(t,.45,1.2));
+  $('roofL').style.strokeDashoffset=$('roofL').dataset.L*(1-lp);$('roofR').style.strokeDashoffset=$('roofR').dataset.L*(1-rp);
+  // panel wipe from the top, grid lines draw
+  $('revRect').setAttribute('height',140*inout(seg(t,.95,1.55)));
+  gridEls.forEach((l,i)=>l.style.strokeDashoffset=l.dataset.L*(1-inout(seg(t,1.3+i*.05,1.8+i*.05))));
+  // windows pop pane by pane
+  paneEls.forEach((e,i)=>{const [x,y,w,h]=PANES[i];const p=Math.max(0,back(seg(t,1.55+i*.06,1.95+i*.06)));e.setAttribute('transform',`translate(${x+w/2} ${y+h/2}) scale(${p}) translate(${-(x+w/2)} ${-(y+h/2)})`)});
+  // KESHARI letters rise through the baseline mask
+  letters.forEach((e,i)=>{const p=expo(seg(t,2.0+i*.07,2.5+i*.07));e.setAttribute('transform',`translate(${e.dataset.x} ${(1-p)*70}) scale(${e.dataset.sx} 1)`)});
+  // ECO SOLAR & ARCHITECT: tracking tightens
+  const ep=seg(t,2.75,3.5),len=519+160*(1-expo(ep));const eco=$('eco');eco.setAttribute('textLength',len);eco.setAttribute('x',304.5-len/2);eco.style.opacity=expo(seg(t,2.75,3.2));
+  // tagline wipe
+  $('tagRect').setAttribute('width',540*inout(seg(t,3.3,3.9)));
+  // shine across the panels
+  const sh=seg(t,3.55,4.35);$('shine').setAttribute('x',(150+sh*520)-0);$('shine').style.opacity=sh>0&&sh<1?1:0;
+};
+init().then(()=>{window.ready=true;
+  if(location.hash==='#play'){const t0=performance.now();const loop=()=>{const t=((performance.now()-t0)/1000)%6;setT(t);requestAnimationFrame(loop)};loop()}else setT(4.6)});
+</script></body></html>
